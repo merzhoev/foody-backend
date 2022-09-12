@@ -4,6 +4,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 dotenv.config();
 
+import DishModel from './models/Dish.js';
+
 import { IngrtController, DishController, UserController, FavoriteController } from './controllers/index.js';
 import { authValidation } from './validations.js';
 import { handleValidationErrors, checkAuth } from './middlewares/index.js';
@@ -20,8 +22,14 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req, res) => {
-  res.json({ message: 'main route' });
+app.get('/', async (req, res) => {
+  const regex = new RegExp(`(\\s+борщ|^борщ)`, 'i');
+  const [dishes, dishCount] = await Promise.all([
+    DishModel.find({ title: regex }).limit(5),
+    DishModel.countDocuments({ title: regex })
+  ]);
+
+  res.json(dishes);
 });
 
 app.get('/second', (req, res) => {
