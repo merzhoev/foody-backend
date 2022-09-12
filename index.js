@@ -20,6 +20,14 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.get('/', (req, res) => {
+  res.json({ message: 'main route' });
+});
+
+app.get('/second', (req, res) => {
+  res.json({ message: 'secondary route' });
+});
+
 app.post('/auth/login', authValidation, handleValidationErrors, UserController.login);
 app.post('/auth/register', authValidation, handleValidationErrors, UserController.register);
 app.get('/auth/me', checkAuth, UserController.getMe);
