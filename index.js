@@ -23,13 +23,17 @@ app.use(express.json());
 app.use(cors());
 
 app.get('/', async (req, res) => {
-  const regex = new RegExp(`(\\s+борщ|^борщ)`, 'i');
-  const [dishes, dishCount] = await Promise.all([
-    DishModel.find({ title: regex }).limit(5),
-    DishModel.countDocuments({ title: regex })
-  ]);
+  try {
+    const regex = new RegExp(`(\\s+борщ|^борщ)`, 'i');
+    const [dishes, dishCount] = await Promise.all([
+      DishModel.find({ title: regex }).limit(5),
+      DishModel.countDocuments({ title: regex })
+    ]);
 
-  res.json(dishes);
+    res.json(dishes);
+  } catch (err) {
+    res.json({ message: 'some error occured' });
+  }
 });
 
 app.get('/second', (req, res) => {
