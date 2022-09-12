@@ -13,7 +13,7 @@ import { handleValidationErrors, checkAuth } from './middlewares/index.js';
 const PORT = process.env.PORT || 5000;
 
 mongoose
-  .connect(process.env.MONGODB_URI)
+  .connect(process.env.MONGODB_URI || 'mongodb+srv://arbi:arbi2001@cluster0.y79g9tu.mongodb.net/foody?retryWrites=true&w=majority')
   .then(() => console.log('DB OK'))
   .catch((err) => console.log('DB error', err));
 
